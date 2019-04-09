@@ -50,6 +50,15 @@
 </template>
 
 <script>
+import crossfilter from 'crossfilter';
+
+// crossfilter data management
+let cf; // crossfilter instance
+let dYear; // dimension for Year
+let dRecordType; // dimension for RecordType
+let dMonth; // dimension for Month
+let dVesselType; // dimension for VesselType
+
 export default {
   name: 'MC2MigrantBoats',
   data() {
@@ -62,7 +71,65 @@ export default {
         value: 'All',
         options: ['All', 'Rustic', 'Raft'],
       },
+      reports: [],
     };
+  },
+  mounted() {
+    fetch('/static/data/migrant.json')
+      .then(res => res.json())
+      .then((res) => {
+        this.reports = res.map((d) => {
+          const r = {
+            EncounterDate: d.EncounterDate,
+            NumDeaths: +d.NumDeaths,
+            Passengers: +d.Passengers,
+            RecordNotes: d.RecordNotes,
+            RecordType: d.RecordType,
+            USCG_Vessel: d.USCG_Vessel,
+            VesselType: d.VesselType,
+            year: +d.EncounterDate.split('-')[0], // extract only year
+          };
+          // if(d.EncounterCoords)
+          r.EncounterCoords = [+d.EncounterCoords[0], +d.EncounterCoords[1]];
+          // if(d.LaunchCoords)
+          r.LaunchCoords = [+d.LaunchCoords[0], +d.LaunchCoords[1]];
+
+          return r;
+        });
+
+
+        // initialize Crossfilter
+        cf = crossfilter(this.reports);
+        dYear = cf.dimension(d => d.year);
+        dRecordType = cf.dimension(d => d.RecordType);
+        dVesselType = cf.dimension(d => d.VesselType);
+
+        // dRecordType.filterAll();
+        console.log('years', dYear.group().reduceCount().all());
+        console.log('recordType', dRecordType.group().reduceCount().all());
+        console.log('vesselType', dVesselType.group().reduceCount().all());
+
+        // select count(*) from migrants where VesselType=="Rustic”
+        // dVesselType.filter("Go Fast");
+        console.log('num reports (Go Fast)', cf.groupAll().reduceCount());
+        // select sum(Passengers) from migrants where VesselType=="Rustic”
+        console.log('num passengers (Go Fast)', cf.groupAll().reduceSum(d => d.Passengers).value());
+        // select sum(NumDeaths) from migrants where VesselType=="Rustic”
+        console.log('num deaths (Go Fast)', cf.groupAll().reduceSum(d => d.NumDeaths));
+        // select VesselType, count(*) from migrants group by VesselType
+        const countVesselType = dVesselType.group().reduceCount();
+        console.log(countVesselType.all());
+
+        // how many report?
+        // select count(*) from migrants
+        console.log('num reports', cf.groupAll().reduceCount().value());
+
+        // select sum(Passengers) from migrants
+        console.log('num passengers', cf.groupAll().reduceSum(d => d.Passengers).value());
+
+        // select sum(NumDeaths) from migrants
+        console.log('num deaths', cf.groupAll().reduceSum(d => d.NumDeaths).value());
+      });
   },
 };
 </script>
