@@ -60,7 +60,7 @@ export default {
       },
       boatType: {
         value: 'All',
-        options: ['All','Rustic','Raft'],
+        options: ['All', 'Rustic', 'Raft'],
       },
     };
   },
