@@ -109,6 +109,12 @@ export default {
         console.log('recordType', dRecordType.group().reduceCount().all());
         console.log('vesselType', dVesselType.group().reduceCount().all());
 
+        this.year.options = dYear.group().reduceCount().all().map(v => v.key);
+        this.year.value = this.year.options[0];
+
+        this.boatType.options = dVesselType.group().reduceCount().all().map(v => v.key);
+        this.boatType.value = this.boatType.options[0];
+
         // select count(*) from migrants where VesselType=="Rustic”
         // dVesselType.filter("Go Fast");
         console.log('num reports (Go Fast)', cf.groupAll().reduceCount());
