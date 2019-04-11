@@ -21,6 +21,16 @@
           ></b-form-checkbox-group>
         </b-form-group>
       </b-col>
+      <b-col>
+        <b-form-group label="Select a record type">
+          <b-form-checkbox-group
+            v-model="recordType.value"
+            :options="recordType.options"
+            name="buttonsRecords"
+            buttons
+          ></b-form-checkbox-group>
+        </b-form-group>
+      </b-col>
     </b-row>
     <b-row class="map">
       <b-col cols="9">
@@ -77,6 +87,10 @@ export default {
       boatType: {
         value: 'All',
         options: ['All', 'Rustic', 'Raft'],
+      },
+      recordType: {
+        value: 'All',
+        options: ['All', 'Interdiction', 'Landing'],
       },
       numRecords: 0,
       numPassengers: 0,
@@ -146,6 +160,18 @@ export default {
           dVesselType.filter(null);
         } else {
           dVesselType.filter(newVal.value);
+        }
+
+        this.refreshCounters();
+      },
+      deep: true, // force watching within properties
+    },
+    recordType: {
+      handler(newVal) {
+        if (newVal.value === 'All') {
+          dRecordType.filter(null);
+        } else {
+          dRecordType.filter(newVal.value);
         }
 
         this.refreshCounters();
