@@ -30,7 +30,9 @@
       <b-col>
         <h3>Counters</h3>
         <div style="height:400px; background-color: beige">
-          <Counter measure="Measure" :value="10"></Counter>
+          <Counter measure="# Records" :value="numRecords"></Counter>
+          <Counter measure="# Passengers" :value="numPassengers"></Counter>
+          <Counter measure="# Deaths" :value="numDeaths"></Counter>
         </div>
       </b-col>
     </b-row>
@@ -141,6 +143,17 @@ export default {
         // select sum(NumDeaths) from migrants
         console.log('num deaths', cf.groupAll().reduceSum(d => d.NumDeaths).value());
       });
+  },
+  computed: {
+    numRecords() {
+      return cf.groupAll().reduceCount().value();
+    },
+    numPassengers() {
+      return cf.groupAll().reduceSum(d => d.Passengers).value();
+    },
+    numDeaths() {
+      return cf.groupAll().reduceSum(d => d.NumDeaths).value();
+    },
   },
 };
 </script>
