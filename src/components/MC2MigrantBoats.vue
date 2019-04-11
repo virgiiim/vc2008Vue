@@ -78,14 +78,16 @@ export default {
         value: 'All',
         options: ['All', 'Rustic', 'Raft'],
       },
-      reports: [],
+      numRecords: 0,
+      numPassengers: 0,
+      numDeaths: 0,
     };
   },
   mounted() {
     fetch('/static/data/migrant.json')
       .then(res => res.json())
       .then((res) => {
-        this.reports = res.map((d) => {
+        const reports = res.map((d) => {
           const r = {
             EncounterDate: d.EncounterDate,
             NumDeaths: +d.NumDeaths,
@@ -106,7 +108,7 @@ export default {
 
 
         // initialize Crossfilter
-        cf = crossfilter(this.reports);
+        cf = crossfilter(reports);
         dYear = cf.dimension(d => d.year);
         dRecordType = cf.dimension(d => d.RecordType);
         dVesselType = cf.dimension(d => d.VesselType);
@@ -142,17 +144,23 @@ export default {
 
         // select sum(NumDeaths) from migrants
         console.log('num deaths', cf.groupAll().reduceSum(d => d.NumDeaths).value());
+        this.refreshCounters();
       });
   },
-  computed: {
-    numRecords() {
-      return cf.groupAll().reduceCount().value();
+  methods: {
+    refreshCounters() {
+      this.numRecords = cf.groupAll().reduceCount().value();
+      this.numPassengers = cf.groupAll().reduceSum(d => d.Passengers).value();
+      this.numDeaths = cf.groupAll().reduceSum(d => d.NumDeaths).value();
     },
-    numPassengers() {
-      return cf.groupAll().reduceSum(d => d.Passengers).value();
-    },
-    numDeaths() {
-      return cf.groupAll().reduceSum(d => d.NumDeaths).value();
+  },
+  watch: {
+    year: {
+      handler(newVal) {
+        dYear.filter(newVal.value);
+        this.refreshCounters();
+      },
+      deep: true, // force watching within properties
     },
   },
 };
