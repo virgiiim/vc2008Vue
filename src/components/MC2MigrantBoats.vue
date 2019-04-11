@@ -113,37 +113,15 @@ export default {
         dRecordType = cf.dimension(d => d.RecordType);
         dVesselType = cf.dimension(d => d.VesselType);
 
-        // dRecordType.filterAll();
-        console.log('years', dYear.group().reduceCount().all());
-        console.log('recordType', dRecordType.group().reduceCount().all());
-        console.log('vesselType', dVesselType.group().reduceCount().all());
-
         this.year.options = dYear.group().reduceCount().all().map(v => v.key);
         this.year.value = this.year.options[0];
 
         this.boatType.options = ['All'].concat(dVesselType.group().reduceCount().all().map(v => v.key));
         this.boatType.value = this.boatType.options[0];
 
-        // select count(*) from migrants where VesselType=="Rustic”
-        // dVesselType.filter("Go Fast");
-        console.log('num reports (Go Fast)', cf.groupAll().reduceCount());
-        // select sum(Passengers) from migrants where VesselType=="Rustic”
-        console.log('num passengers (Go Fast)', cf.groupAll().reduceSum(d => d.Passengers).value());
-        // select sum(NumDeaths) from migrants where VesselType=="Rustic”
-        console.log('num deaths (Go Fast)', cf.groupAll().reduceSum(d => d.NumDeaths));
-        // select VesselType, count(*) from migrants group by VesselType
-        const countVesselType = dVesselType.group().reduceCount();
-        console.log(countVesselType.all());
+        this.recordType.options = ['All'].concat(dRecordType.group().reduceCount().all().map(v => v.key));
+        this.recordType.value = this.recordType.options[0];
 
-        // how many report?
-        // select count(*) from migrants
-        console.log('num reports', cf.groupAll().reduceCount().value());
-
-        // select sum(Passengers) from migrants
-        console.log('num passengers', cf.groupAll().reduceSum(d => d.Passengers).value());
-
-        // select sum(NumDeaths) from migrants
-        console.log('num deaths', cf.groupAll().reduceSum(d => d.NumDeaths).value());
         this.refreshCounters();
       });
   },
