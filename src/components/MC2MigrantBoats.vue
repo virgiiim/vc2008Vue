@@ -50,7 +50,7 @@
       <b-col>
         <h5>Year</h5>
         <div style="height:200px; background-color: beige">
-          <Chart></Chart>
+          <Chart :cfAggregation="dataYear"></Chart>
         </div>
       </b-col>
       <b-col>
@@ -99,6 +99,7 @@ export default {
       numRecords: 0,
       numPassengers: 0,
       numDeaths: 0,
+      dataYear: [],
     };
   },
   mounted() {
@@ -154,6 +155,7 @@ export default {
     year: {
       handler(newVal) {
         dYear.filter(newVal.value);
+        this.dataYear = dYear.group().reduceCount().all();
         this.refreshCounters();
       },
       deep: true, // force watching within properties

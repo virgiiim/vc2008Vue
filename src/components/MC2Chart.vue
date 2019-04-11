@@ -10,6 +10,9 @@ export default {
   components: {
     VuePlotly,
   },
+  props: {
+    cfAggregation: Array,
+  },
   data() {
     return {
       data: [{
@@ -22,15 +25,26 @@ export default {
         height: 250,
         margin: {
           t: 10,
-          l: 10,
-          b: 10,
+          l: 40,
+          b: 30,
           r: 10,
+          pad: 5,
+        },
+        yaxis: {
+          tickformat: 'd',
         },
       },
       options: {
         displayModeBar: false,
       },
     };
+  },
+  watch: {
+    cfAggregation(datum) {
+      console.log(datum);
+      this.data[0].y = datum.map(d => d.key);
+      this.data[0].x = datum.map(d => d.value);
+    },
   },
 };
 </script>
