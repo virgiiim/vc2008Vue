@@ -49,7 +49,9 @@
     <b-row class="plots">
       <b-col>
         <h5>Year</h5>
-        <div style="height:200px; background-color: beige"></div>
+        <div style="height:200px; background-color: beige">
+          <Chart></Chart>
+        </div>
       </b-col>
       <b-col>
         <h5>Boat Type</h5>
@@ -66,6 +68,7 @@
 <script>
 import crossfilter from 'crossfilter';
 import Counter from '@/components/MC2Counter';
+import Chart from '@/components/MC2Chart';
 
 // crossfilter data management
 let cf; // crossfilter instance
@@ -77,6 +80,7 @@ export default {
   name: 'MC2MigrantBoats',
   components: {
     Counter,
+    Chart,
   },
   data() {
     return {
