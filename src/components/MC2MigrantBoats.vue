@@ -121,7 +121,7 @@ export default {
         this.year.options = dYear.group().reduceCount().all().map(v => v.key);
         this.year.value = this.year.options[0];
 
-        this.boatType.options = dVesselType.group().reduceCount().all().map(v => v.key);
+        this.boatType.options = ['All'].concat(dVesselType.group().reduceCount().all().map(v => v.key));
         this.boatType.value = this.boatType.options[0];
 
         // select count(*) from migrants where VesselType=="Rustic”
@@ -158,6 +158,18 @@ export default {
     year: {
       handler(newVal) {
         dYear.filter(newVal.value);
+        this.refreshCounters();
+      },
+      deep: true, // force watching within properties
+    },
+    boatType: {
+      handler(newVal) {
+        if (newVal.value === 'All') {
+          dVesselType.filter(null);
+        } else {
+          dVesselType.filter(newVal.value);
+        }
+
         this.refreshCounters();
       },
       deep: true, // force watching within properties
