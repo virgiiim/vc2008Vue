@@ -55,11 +55,15 @@
       </b-col>
       <b-col>
         <h5>Boat Type</h5>
-        <div style="height:200px; background-color: beige"></div>
+        <div style="height:200px; background-color: beige">
+          <Chart :cfAggregation="dataBoat"></Chart>
+        </div>
       </b-col>
       <b-col>
         <h5>Interdictions</h5>
-        <div style="height:200px; background-color: beige"></div>
+        <div style="height:200px; background-color: beige">
+          <Chart :cfAggregation="dataRecord"></Chart>
+        </div>
       </b-col>
     </b-row>
   </b-container>
@@ -100,6 +104,8 @@ export default {
       numPassengers: 0,
       numDeaths: 0,
       dataYear: [],
+      dataBoat: [],
+      dataRecord: [],
     };
   },
   mounted() {
@@ -142,6 +148,7 @@ export default {
         this.recordType.value = this.recordType.options[0];
 
         this.refreshCounters();
+        this.refreshCharts();
       });
   },
   methods: {
@@ -150,13 +157,18 @@ export default {
       this.numPassengers = cf.groupAll().reduceSum(d => d.Passengers).value();
       this.numDeaths = cf.groupAll().reduceSum(d => d.NumDeaths).value();
     },
+    refreshCharts() {
+      this.dataYear = dYear.group().reduceCount().all();
+      this.dataBoat = dVesselType.group().reduceCount().all();
+      this.dataRecord = dRecordType.group().reduceCount().all();
+    },
   },
   watch: {
     year: {
       handler(newVal) {
         dYear.filter(newVal.value);
-        this.dataYear = dYear.group().reduceCount().all();
         this.refreshCounters();
+        this.refreshCharts();
       },
       deep: true, // force watching within properties
     },
@@ -169,6 +181,7 @@ export default {
         }
 
         this.refreshCounters();
+        this.refreshCharts();
       },
       deep: true, // force watching within properties
     },
@@ -181,6 +194,7 @@ export default {
         }
 
         this.refreshCounters();
+        this.refreshCharts();
       },
       deep: true, // force watching within properties
     },

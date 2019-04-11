@@ -25,13 +25,13 @@ export default {
         height: 250,
         margin: {
           t: 10,
-          l: 40,
+          l: 70,
           b: 30,
           r: 10,
           pad: 5,
         },
         yaxis: {
-          tickformat: 'd',
+          type: 'category',
         },
       },
       options: {
