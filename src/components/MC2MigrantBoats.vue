@@ -155,7 +155,7 @@ export default {
         this.refreshCharts();
 
         const fcReport = this.getGeoJsonFromReports(reports);
-        
+
       });
   },
   methods: {
