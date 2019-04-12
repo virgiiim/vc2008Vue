@@ -36,7 +36,7 @@
       <b-col cols="9">
         <h3>Map</h3>
         <div style="height:500px; background-color: beige">
-          <Map></Map>
+          <Map :featureCollection="pointCollection"></Map>
         </div>
       </b-col>
       <b-col>
@@ -110,6 +110,21 @@ export default {
       dataYear: [],
       dataBoat: [],
       dataRecord: [],
+      pointCollection: {
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            properties: {
+              name: 'Default point',
+            },
+            geometry: {
+              type: 'Point',
+              coordinates: [1, 1],
+            },
+          },
+        ],
+      },
     };
   },
   mounted() {
@@ -155,7 +170,7 @@ export default {
         this.refreshCharts();
 
         const fcReport = this.getGeoJsonFromReports(reports);
-
+        this.pointCollection = fcReport;
       });
   },
   methods: {
@@ -193,10 +208,9 @@ export default {
                 },
               };
             }
-
-            return fc;
           }),
       };
+      return fc;
     },
   },
   watch: {

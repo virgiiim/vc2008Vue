@@ -50,6 +50,13 @@ export default {
     gFeatures.datum(this.featureCollection)
       .call(map);
   },
+  watch:{
+    featureCollection(newFC){
+      const gFeatures = d3.select(this.$refs.features);
+      gFeatures.datum(newFC)
+        .call(map);
+    },
+  }
 };
 </script>
 
