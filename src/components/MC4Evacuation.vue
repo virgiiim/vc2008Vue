@@ -29,20 +29,19 @@ import BuildingBitmap from '@/assets/BuildingBitmap';
 
 const d3 = require('d3');
 
+
 export default {
   name: 'MC4Evacuation',
   data() {
     return {
       persons: [],
-    }
+    };
   },
   mounted() {
     fetch('/static/data/building_map.txt')
       .then(response => response.text())
       .then((map) => {
         const aMap = map.split('\n').map(d => d.trim().split(' ').map(e => +e));
-        console.log('map', aMap);
-
         const bb = BuildingBitmap();
         d3.select(this.$refs.building)
           .datum(aMap)
