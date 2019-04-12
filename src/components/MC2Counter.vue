@@ -1,8 +1,10 @@
 <template>
-  <b-row class="counter">
+  <b-row class="counter mb-2">
     <b-col>
-      <h3 class="measure">{{measure}}</h3>
-      <h1 class="value">{{value}}</h1>
+      <b-card bg-variant="light" :header="measure" class="text-center">
+        <b-card-text><h1>{{value}}</h1></b-card-text>
+      </b-card>
+
     </b-col>
   </b-row>
 </template>
