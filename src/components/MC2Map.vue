@@ -10,7 +10,8 @@ import MapWithLayers from '@/assets/js/Layers';
 
 const d3 = require('d3');
 
-const map = MapWithLayers(); // component to handle the map
+const map = MapWithLayers()
+  .featureClass('RecordType'); // component to handle the map
 
 export default {
   name: 'MC2Map',
@@ -75,6 +76,15 @@ export default {
 
   g.world path{
     fill: lightgray;
+  }
+
+  g.features path {
+    fill: green;
+    fill-opacity: 0.60;
+  }
+
+  g.features path.Interdiction {
+    fill: red;
   }
 </style>
 
