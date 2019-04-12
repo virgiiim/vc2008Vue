@@ -168,9 +168,8 @@ export default {
 
         this.refreshCounters();
         this.refreshCharts();
-
-        const fcReport = this.getGeoJsonFromReports(reports);
-        this.pointCollection = fcReport;
+        // select one of the dimensions at the beginning: they are equivalent
+        this.refreshMap(dYear);
       });
   },
   methods: {
@@ -183,6 +182,9 @@ export default {
       this.dataYear = dYear.group().reduceCount().all();
       this.dataBoat = dVesselType.group().reduceCount().all();
       this.dataRecord = dRecordType.group().reduceCount().all();
+    },
+    refreshMap(cfDimension) {
+      this.pointCollection = this.getGeoJsonFromReports(cfDimension.top(Infinity));
     },
     getGeoJsonFromReports(reports) {
       const fc = {
