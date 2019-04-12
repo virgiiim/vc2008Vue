@@ -14,17 +14,15 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <MC2MigrantBoats></MC2MigrantBoats>
+
   </div>
 </template>
 
 <script>
-import MC2MigrantBoats from '@/components/MC2MigrantBoats';
 
 export default {
   name: 'App',
   components: {
-    MC2MigrantBoats,
   },
 };
 </script>
