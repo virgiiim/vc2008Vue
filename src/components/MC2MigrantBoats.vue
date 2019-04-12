@@ -221,6 +221,7 @@ export default {
         dYear.filter(newVal.value);
         this.refreshCounters();
         this.refreshCharts();
+        this.refreshMap(dYear);
       },
       deep: true, // force watching within properties
     },
@@ -234,6 +235,7 @@ export default {
 
         this.refreshCounters();
         this.refreshCharts();
+        this.refreshMap(dVesselType);
       },
       deep: true, // force watching within properties
     },
@@ -247,6 +249,7 @@ export default {
 
         this.refreshCounters();
         this.refreshCharts();
+        this.refreshMap(dRecordType);
       },
       deep: true, // force watching within properties
     },
