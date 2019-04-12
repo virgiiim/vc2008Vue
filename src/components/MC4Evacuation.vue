@@ -25,6 +25,11 @@ const d3 = require('d3');
 
 export default {
   name: 'MC4Evacuation',
+  data() {
+    return {
+      persons: [],
+    }
+  },
   mounted() {
     fetch('/static/data/building_map.txt')
       .then(response => response.text())
@@ -52,7 +57,7 @@ export default {
               person: entries[1],
             };
           });
-        console.log('ids', ids);
+        this.persons = ids;
       });
   },
 };
