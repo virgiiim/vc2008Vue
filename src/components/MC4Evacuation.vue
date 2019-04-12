@@ -8,6 +8,7 @@
         <h2>Building Map</h2>
         <svg width="100%" height="500">
           <g class="building" ref="building"></g>
+          <g class="trajectories" ref="trajectories"></g>
         </svg>
       </b-col>
       <b-col cols="3">
@@ -26,9 +27,14 @@
 
 <script>
 import BuildingBitmap from '@/assets/BuildingBitmap';
+import TrajectoryView from '@/assets/TRajectoryView';
 
 const d3 = require('d3');
 
+
+function euclideanDistance(a, b) {
+  return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+}
 
 export default {
   name: 'MC4Evacuation',
@@ -63,6 +69,47 @@ export default {
             };
           });
         this.persons = ids;
+      });
+
+    d3.tsv('/static/data/rfid_pathway.txt')
+      .then((rows) => {
+        const paths = rows.map(row => ({
+          person: +row.Person,
+          time: +row.Time,
+          x: +row.xcor,
+          y: +row.ycor,
+        }));
+        const trajs = d3.nest()
+          .key(d => d.person)
+          .entries(paths);
+
+        const trs = d3.values(trajs).map((d) => {
+          const pl = d.values.map((p, i) => {
+            if (i == 0) return 0;
+            return euclideanDistance(p, d.values[i - 1]);
+          });
+          return {
+            person: +d.key,
+            values: d.values.map(p => ({ x: p.x, y: p.y })),
+            path_length: pl.reduce((a, b) => a + b, 0),
+            delta_s: pl,
+          };
+        });
+
+        console.log('trajs', trajs);
+        console.log('trs', trs);
+
+        const trajectories = TrajectoryView();
+        d3.select(this.$refs.trajectories)
+          .datum(trs)
+          .call(trajectories);
+
+        // timeline = TimelineBrush().domain([0,trs[0].values.length]);
+        // d3.select("#timeline")
+        // .call(timeline);
+
+        // d3.select("#status")
+        // .call(me.statusbar);
       });
   },
 };
