@@ -1,5 +1,8 @@
 <template>
   <b-container>
+    <b-row class="mt-3">
+      <h1>Mini Challenge 2</h1>
+    </b-row>
     <b-row>
       <b-col>
         <b-form-group label="Select a year">
@@ -211,27 +214,26 @@ export default {
       const fc = {
         type: 'FeatureCollection',
         features: reports
-          .map((d) => { // for each entry in record dictionary
-            if (d.EncounterCoords) {
-              return {
-                type: 'Feature',
-                properties: {
-                  EncounterDate: d.EncounterDate,
-                  NumDeaths: +d.NumDeaths,
-                  Passengers: +d.Passengers,
-                  RecordNotes: d.RecordNotes,
-                  RecordType: d.RecordType,
-                  USCG_Vessel: d.USCG_Vessel,
-                  VesselType: d.VesselType,
-                  year: d.year,
-                },
-                geometry: {
-                  type: 'Point',
-                  coordinates: d.EncounterCoords,
-                },
-              };
-            }
-          }),
+          .filter(d => d.EncounterCoords)
+          .map(d => // for each entry in record dictionary
+            ({
+              type: 'Feature',
+              properties: {
+                EncounterDate: d.EncounterDate,
+                NumDeaths: +d.NumDeaths,
+                Passengers: +d.Passengers,
+                RecordNotes: d.RecordNotes,
+                RecordType: d.RecordType,
+                USCG_Vessel: d.USCG_Vessel,
+                VesselType: d.VesselType,
+                year: d.year,
+              },
+              geometry: {
+                type: 'Point',
+                coordinates: d.EncounterCoords,
+              },
+            }),
+          ),
       };
       return fc;
     },
