@@ -35,7 +35,9 @@
     <b-row class="map">
       <b-col cols="9">
         <h3>Map</h3>
-        <div style="height:500px; background-color: beige"></div>
+        <div style="height:500px; background-color: beige">
+          <Map></Map>
+        </div>
       </b-col>
       <b-col>
         <h3>Counters</h3>
@@ -73,6 +75,7 @@
 import crossfilter from 'crossfilter';
 import Counter from '@/components/MC2Counter';
 import Chart from '@/components/MC2Chart';
+import Map from '@/components/MC2Map';
 
 // crossfilter data management
 let cf; // crossfilter instance
@@ -85,6 +88,7 @@ export default {
   components: {
     Counter,
     Chart,
+    Map,
   },
   data() {
     return {
