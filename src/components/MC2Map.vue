@@ -1,5 +1,5 @@
 <template>
-  <svg height="500" width="100%">
+  <svg height="500" width="100%" class="map">
     <g class="world" ref="world"></g>
     <g class="features" ref="features"></g>
   </svg>
@@ -68,4 +68,13 @@ export default {
   },
 };
 </script>
+<style>
+  svg.map{
+    background-color: lightcyan;
+  }
+
+  g.world path{
+    fill: lightgray;
+  }
+</style>
 
