@@ -62,6 +62,8 @@ export default {
       const gFeatures = d3.select(this.$refs.features);
       gFeatures.datum(newFC)
         .call(map);
+      const gWorld = d3.select(this.$refs.world);
+      gWorld.call(map);
     },
   },
 };
