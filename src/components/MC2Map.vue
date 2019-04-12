@@ -21,7 +21,7 @@ export default {
         // removing Antartide since there is a problem with the contour geometry
         const fWorld = {
           ...world,
-          features: world.features.filter(d => d.properties.CNTR_ID != 'AQ'),
+          features: world.features.filter(d => d.properties.CNTR_ID !== 'AQ'),
         };
         gWorld.datum(fWorld)
           .call(map);

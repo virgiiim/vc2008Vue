@@ -10,7 +10,6 @@ export default function MapWithLayers() {
   let scale = 100; // default value for scale
   let center = [0, 0]; // default value for centering the map
   let path;
-  let gmap;
 
   function me(selection) {
     console.log('MapWithLayers', selection.datum());
@@ -24,13 +23,7 @@ export default function MapWithLayers() {
 
     path = d3.geoPath().projection(projection);
 
-    // path.pointRadius(function(d){
-    // 	return radius(d.properties.count);
-    // })
-
-
     // create a group container for map
-
     const paths = selection.selectAll('path')
       .data(selection.datum().features);
 
@@ -44,7 +37,7 @@ export default function MapWithLayers() {
 
 
   // getter and setter for variable scale
-  me.scale = function (_) {
+  me.scale = function _scale(_) {
     if (!arguments.length) return scale;
     scale = _;
     projection.scale(scale);
@@ -53,7 +46,7 @@ export default function MapWithLayers() {
   };
 
   // getter and setter for variable center
-  me.center = function (_) {
+  me.center = function _center(_) {
     if (!arguments.length) return center;
     center = _;
     projection.center(center);

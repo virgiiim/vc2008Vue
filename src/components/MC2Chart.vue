@@ -41,7 +41,6 @@ export default {
   },
   watch: {
     cfAggregation(datum) {
-      console.log(datum);
       this.data[0].y = datum.map(d => d.key);
       this.data[0].x = datum.map(d => d.value);
     },
