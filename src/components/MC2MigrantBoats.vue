@@ -190,7 +190,7 @@ export default {
       const fc = {
         type: 'FeatureCollection',
         features: reports
-          .map((d) => { // for each entry in Museums dictionary
+          .map((d) => { // for each entry in record dictionary
             if (d.EncounterCoords) {
               return {
                 type: 'Feature',

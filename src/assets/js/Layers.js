@@ -10,12 +10,10 @@ export default function MapWithLayers() {
   let scale = 100; // default value for scale
   let center = [0, 0]; // default value for centering the map
   let path;
+  let featureClass = 'name'; // define a property whose value is used as class
 
   function me(selection) {
-    console.log('MapWithLayers', selection.datum());
-
     const boundaries = selection.node().parentNode.getBoundingClientRect();
-    console.log('dimensions', boundaries);
     projection = d3.geoMercator()
       .scale(scale)
       .center(center)
@@ -30,7 +28,13 @@ export default function MapWithLayers() {
     paths.exit().remove();
 
     paths.enter()
-      .append('path');
+      .append('path')
+      .attr('class', (d) => {
+        if (d[featureClass]) {
+          return d[featureClass];
+        }
+        return 'none';
+      });
 
     selection.selectAll('path').attr('d', path);
   }
@@ -53,5 +57,14 @@ export default function MapWithLayers() {
 
     return me;
   };
+
+  // getter and setter for variable center
+  me.featureClass = function _featureClass(_) {
+    if (!arguments.length) return featureClass;
+    featureClass = _;
+
+    return me;
+  };
+
   return me;
 }
