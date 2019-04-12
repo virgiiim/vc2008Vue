@@ -50,13 +50,20 @@ export default {
     gFeatures.datum(this.featureCollection)
       .call(map);
   },
-  watch:{
-    featureCollection(newFC){
+  watch: {
+    featureCollection(newFC) {
+      const extentX = d3.extent(newFC.features, d => d.geometry.coordinates[0]);
+      const extentY = d3.extent(newFC.features, d => d.geometry.coordinates[1]);
+      const centroid = [(extentX[0] + extentX[1]) / 2, (extentY[0] + extentY[1]) / 2];
+
+      map.center(centroid)
+        .scale(3000);
+
       const gFeatures = d3.select(this.$refs.features);
       gFeatures.datum(newFC)
         .call(map);
     },
-  }
+  },
 };
 </script>
 
