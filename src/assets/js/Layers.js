@@ -28,15 +28,16 @@ export default function MapWithLayers() {
     paths.exit().remove();
 
     paths.enter()
-      .append('path')
+      .append('path');
+
+    selection.selectAll('path')
       .attr('class', (d) => {
-        if (d[featureClass]) {
-          return d[featureClass];
+        if (d.properties[featureClass]) {
+          return d.properties[featureClass];
         }
         return 'none';
-      });
-
-    selection.selectAll('path').attr('d', path);
+      })
+      .attr('d', path);
   }
 
 
