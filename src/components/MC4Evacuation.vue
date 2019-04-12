@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import BuildingBitmap from '@/assets/BuildingBitmap';
+
 export default {
   name: 'MC4Evacuation',
   mounted() {
