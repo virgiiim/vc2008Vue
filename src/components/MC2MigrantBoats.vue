@@ -84,9 +84,9 @@
         of the three type of vessels is comparable.</p>
       <p>The effectiveness of the Coast Guard during the three years shows an interdiction
         every two attempts, with a success rate of around 51%. However, this performance
-        has lowered during the years. In <a href="#" class="Year">2005</a> it was around
-        70%. In <a href="#" class="Year">2006</a> has lowered to 56%, and in
-        <a href="#" class="Year">2007</a> to 42%.</p>
+        has lowered during the years. In <b-link @click="setYear('2005')">2005</b-link>
+        it was around 70%. In <b-link @click="setYear('2006')">2006</b-link> has lowered
+        to 56%, and in <b-link @click="setYear('2007')">2007</b-link></p>
     </b-row>
   </b-container>
 </template>
@@ -237,6 +237,9 @@ export default {
     },
     setRecordType(selector) {
       Vue.set(this.recordType, 'value', selector);
+    },
+    setYear(selector) {
+      Vue.set(this.year, 'value', selector);
     },
   },
   watch: {
