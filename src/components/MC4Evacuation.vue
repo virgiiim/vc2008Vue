@@ -20,7 +20,9 @@
 
 <script>
 import BuildingBitmap from '@/assets/BuildingBitmap';
+
 const d3 = require('d3');
+
 export default {
   name: 'MC4Evacuation',
   mounted() {
@@ -34,6 +36,23 @@ export default {
         d3.select(this.$refs.building)
           .datum(aMap)
           .call(bb);
+      });
+
+    d3.tsv('/static/data/rfid_assignments.txt')
+      .then((rows) => {
+        const ids = rows
+          .filter((row) => {
+            const entries = d3.values(row);
+            return (entries[0].length > 0); // ignore rows with invalid id (not numeric)
+          })
+          .map((row) => {
+            const entries = d3.values(row);
+            return {
+              id: +entries[0],
+              person: entries[1],
+            };
+          });
+        console.log('ids', ids);
       });
   },
 };
