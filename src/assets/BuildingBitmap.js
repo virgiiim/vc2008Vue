@@ -1,7 +1,7 @@
 const d3 = require('d3');
 
 export default function buildingBitmap() {
-  const cellSize = 8;
+  const cellSize = 7.5;
   function me(selection) {
     const gr = selection.selectAll('g.row')
       .data(selection.datum())

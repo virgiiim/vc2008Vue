@@ -10,9 +10,15 @@
           <g class="building" ref="building"></g>
         </svg>
       </b-col>
-      <b-col cols="2">
+      <b-col cols="3">
         <h2>Persons</h2>
-        <div style="height:500px; background-color: lightyellow"></div>
+        <b-list-group class="personList">
+          <b-list-group-item v-for="p in persons" :key="p.id"
+          class="d-flex justify-content-between align-items-center">
+            <b-badge variant="primary" pill>{{p.id}}</b-badge>
+            {{p.person}}
+          </b-list-group-item>
+        </b-list-group>
       </b-col>
     </b-row>
   </b-container>
@@ -64,5 +70,9 @@ export default {
 </script>
 
 <style scoped>
-
+  .personList{
+    height: 600px;
+    overflow: scroll;
+    overflow-style: marquee-block ;
+  }
 </style>
