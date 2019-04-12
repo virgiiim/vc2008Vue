@@ -14,15 +14,17 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-
+    <MC4Evacuation></MC4Evacuation>
   </div>
 </template>
 
 <script>
+import MC4Evacuation from '@/components/MC4Evacuation';
 
 export default {
   name: 'App',
   components: {
+    MC4Evacuation,
   },
 };
 </script>
