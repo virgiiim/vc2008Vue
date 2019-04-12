@@ -153,6 +153,9 @@ export default {
 
         this.refreshCounters();
         this.refreshCharts();
+
+        const fcReport = this.getGeoJsonFromReports(reports);
+        
       });
   },
   methods: {
@@ -165,6 +168,35 @@ export default {
       this.dataYear = dYear.group().reduceCount().all();
       this.dataBoat = dVesselType.group().reduceCount().all();
       this.dataRecord = dRecordType.group().reduceCount().all();
+    },
+    getGeoJsonFromReports(reports) {
+      const fc = {
+        type: 'FeatureCollection',
+        features: reports
+          .map((d) => { // for each entry in Museums dictionary
+            if (d.EncounterCoords) {
+              return {
+                type: 'Feature',
+                properties: {
+                  EncounterDate: d.EncounterDate,
+                  NumDeaths: +d.NumDeaths,
+                  Passengers: +d.Passengers,
+                  RecordNotes: d.RecordNotes,
+                  RecordType: d.RecordType,
+                  USCG_Vessel: d.USCG_Vessel,
+                  VesselType: d.VesselType,
+                  year: d.year,
+                },
+                geometry: {
+                  type: 'Point',
+                  coordinates: d.EncounterCoords,
+                },
+              };
+            }
+
+            return fc;
+          }),
+      };
     },
   },
   watch: {
