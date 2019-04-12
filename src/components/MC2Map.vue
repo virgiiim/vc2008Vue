@@ -16,7 +16,7 @@ export default {
   name: 'MC2Map',
   mounted() {
     const gWorld = d3.select(this.$refs.world);
-    d3.json('assets/data/world.geojson')
+    d3.json('/static/data/world.geojson')
       .then((world) => {
         // removing Antartide since there is a problem with the contour geometry
         const fWorld = {
