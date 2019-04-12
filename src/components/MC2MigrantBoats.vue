@@ -35,13 +35,13 @@
     <b-row class="map">
       <b-col cols="9">
         <h3>Map</h3>
-        <div style="height:500px; background-color: beige">
+        <div style="height:500px">
           <Map :featureCollection="pointCollection"></Map>
         </div>
       </b-col>
       <b-col>
         <h3>Counters</h3>
-        <div style="height:400px; background-color: beige">
+        <div style="height:400px">
           <Counter measure="# Records" :value="numRecords"></Counter>
           <Counter measure="# Passengers" :value="numPassengers"></Counter>
           <Counter measure="# Deaths" :value="numDeaths"></Counter>
@@ -51,19 +51,19 @@
     <b-row class="plots">
       <b-col>
         <h5>Year</h5>
-        <div style="height:200px; background-color: beige">
+        <div style="height:200px">
           <Chart :cfAggregation="dataYear"></Chart>
         </div>
       </b-col>
       <b-col>
         <h5>Boat Type</h5>
-        <div style="height:200px; background-color: beige">
+        <div style="height:200px">
           <Chart :cfAggregation="dataBoat"></Chart>
         </div>
       </b-col>
       <b-col>
         <h5>Interdictions</h5>
-        <div style="height:200px; background-color: beige">
+        <div style="height:200px">
           <Chart :cfAggregation="dataRecord"></Chart>
         </div>
       </b-col>
