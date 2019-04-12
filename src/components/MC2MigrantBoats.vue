@@ -51,27 +51,48 @@
     <b-row class="plots">
       <b-col>
         <h5>Year</h5>
-        <div style="height:200px">
+        <div style="height:300px">
           <Chart :cfAggregation="dataYear"></Chart>
         </div>
       </b-col>
       <b-col>
         <h5>Boat Type</h5>
-        <div style="height:200px">
+        <div style="height:300px">
           <Chart :cfAggregation="dataBoat"></Chart>
         </div>
       </b-col>
       <b-col>
         <h5>Interdictions</h5>
-        <div style="height:200px">
+        <div style="height:300px">
           <Chart :cfAggregation="dataRecord"></Chart>
         </div>
       </b-col>
+    </b-row>
+    <b-row class="description">
+      <p>The map shows a visual representation of the migrant flows over three years
+        from the Isla de Sueno towards United States and Mexico. Each point on the map
+        represent an event registered by the US Coast Guard: a green point represent
+        a landing point of the boat; a red point represent an interdiction of the Coast
+        Guard in that position. The map and the linked displays with charts and statistics
+        allow to understand the evolution of the migration during the three years.</p>
+      <p>The number of boats has increased along the years. On average there are 150 more
+        attempts with respect to the previous year. The proportion of the three types of
+        vessels (Rustic, Raft, Go Fast) is constant. There is no evidence that a vessel
+        type is more effective than the others. Considering the respective group of
+        records of type <b-link @click="setRecordType('Landing')">Landing</b-link>  and
+        <b-link @click="setRecordType('Interdiction')">Interdiction</b-link> , the ratio
+        of the three type of vessels is comparable.</p>
+      <p>The effectiveness of the Coast Guard during the three years shows an interdiction
+        every two attempts, with a success rate of around 51%. However, this performance
+        has lowered during the years. In <a href="#" class="Year">2005</a> it was around
+        70%. In <a href="#" class="Year">2006</a> has lowered to 56%, and in
+        <a href="#" class="Year">2007</a> to 42%.</p>
     </b-row>
   </b-container>
 </template>
 
 <script>
+import Vue from 'vue';
 import crossfilter from 'crossfilter';
 import Counter from '@/components/MC2Counter';
 import Chart from '@/components/MC2Chart';
@@ -213,6 +234,9 @@ export default {
           }),
       };
       return fc;
+    },
+    setRecordType(selector) {
+      Vue.set(this.recordType, 'value', selector);
     },
   },
   watch: {
