@@ -5,11 +5,18 @@
     </b-row>
     <b-row>
       <b-col>
-        <h2>Building Map</h2>
-        <svg width="100%" height="500">
-          <g class="building" ref="building"></g>
-          <g class="trajectories" ref="trajectories"></g>
-        </svg>
+        <b-row>
+          <h2>Building Map</h2>
+          <svg width="100%" height="500">
+            <g class="building" ref="building"></g>
+            <g class="trajectories" ref="trajectories"></g>
+          </svg>
+        </b-row>
+        <b-row>
+          <b-form-input id="timeRange" v-model="timeInterval" type="range"
+          min="0" max="837" step="1"></b-form-input>
+          <div>Value: {{timeInterval}}</div>
+        </b-row>
       </b-col>
       <b-col cols="3">
         <h2>Persons</h2>
@@ -27,20 +34,22 @@
 
 <script>
 import BuildingBitmap from '@/assets/BuildingBitmap';
-import TrajectoryView from '@/assets/TRajectoryView';
+import TrajectoryView from '@/assets/TrajectoryView';
 
 const d3 = require('d3');
 
 
 function euclideanDistance(a, b) {
-  return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+  return Math.sqrt(((a.x - b.x) ** 2) + ((a.y - b.y) ** 2));
 }
+const trajectories = TrajectoryView();
 
 export default {
   name: 'MC4Evacuation',
   data() {
     return {
       persons: [],
+      timeInterval: 10,
     };
   },
   mounted() {
@@ -85,7 +94,7 @@ export default {
 
         const trs = d3.values(trajs).map((d) => {
           const pl = d.values.map((p, i) => {
-            if (i == 0) return 0;
+            if (i === 0) return 0;
             return euclideanDistance(p, d.values[i - 1]);
           });
           return {
@@ -96,10 +105,6 @@ export default {
           };
         });
 
-        console.log('trajs', trajs);
-        console.log('trs', trs);
-
-        const trajectories = TrajectoryView();
         d3.select(this.$refs.trajectories)
           .datum(trs)
           .call(trajectories);
@@ -111,6 +116,14 @@ export default {
         // d3.select("#status")
         // .call(me.statusbar);
       });
+  },
+  watch: {
+    timeInterval(newVal) {
+      const interval = [Math.max(0, newVal - 10), newVal];
+      trajectories.timeExtent(interval);
+      d3.select(this.$refs.trajectories)
+        .call(trajectories);
+    },
   },
 };
 </script>
