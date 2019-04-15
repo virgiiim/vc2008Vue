@@ -57,8 +57,18 @@ export default {
       .then(response => response.text())
       .then((map) => {
         const aMap = map.split('\n').map(d => d.trim().split(' ').map(e => +e));
-        const bb = BuildingBitmap();
-        d3.select(this.$refs.building)
+        const svg = d3.select(this.$refs.building);
+        const bbox = svg.node().parentNode.getBoundingClientRect();
+        const bw = aMap[0].length;
+        const bh = aMap.length;
+        const cellSize = (bbox.width - 10) / bw;
+        d3.select(svg.node().parentNode).attr('height', cellSize * bh);
+
+        trajectories
+          .cellSize(cellSize);
+        const bb = BuildingBitmap()
+          .cellSize(cellSize);
+        svg
           .datum(aMap)
           .call(bb);
       });

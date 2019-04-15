@@ -3,7 +3,7 @@ const d3 = require('d3');
 export default function Trajectories() {
   let container;
   let paths;
-  const cellSize = 7.5;
+  let cellSize = 7.5;
 
   const x = d3.scaleLinear()
     .domain([0, 91])
@@ -87,6 +87,15 @@ export default function Trajectories() {
     return me;
   };
 
+
+  me.cellSize = function _cellSize(_) {
+    if (!arguments.length) return cellSize;
+    cellSize = _;
+    x.range([cellSize * 0.5, (91 * cellSize) + (cellSize * 0.5)]);
+    y.range([(60 * cellSize) + (cellSize * 0.5), cellSize * 0.5]);
+
+    return me;
+  };
 
   // function brushed() {
   //   // to implement on-the-fly render during selection
