@@ -6,7 +6,7 @@
     <b-row>
       <b-col>
         <svg width="100%" height="500">
-          <g class="persons" red="persons"></g>
+          <g class="persons" ref="persons"></g>
         </svg>
       </b-col>
     </b-row>
@@ -14,7 +14,11 @@
 </template>
 
 <script>
+import BubbleChart from '@/assets/BubbleChart.js';
+
 const d3 = require('d3');
+
+const bc = BubbleChart();
 
 export default {
   name: 'MC3PhoneCalls',
@@ -35,7 +39,11 @@ export default {
           duration: +r['Duration(seconds)'],
           cid: +r['Cell Tower'],
         }));
-        console.log(this.users());
+        // console.log(this.users());
+
+        d3.select(this.$refs.persons)
+          .datum(this.users())
+          .call(bc);
       }));
   },
   methods: {
