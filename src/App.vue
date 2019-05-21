@@ -14,14 +14,17 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
+    <MC3PhoneCalls></MC3PhoneCalls>
   </div>
 </template>
 
 <script>
+import MC3PhoneCalls from '@/components/MC3PhoneCalls';
 
 export default {
   name: 'App',
   components: {
+    MC3PhoneCalls,
   },
 };
 </script>
