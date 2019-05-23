@@ -34,8 +34,8 @@ export default function BubbleChart() {
       .attr('stroke-width', 1);
 
     selection.selectAll('g.circle circle')
-      .attr('fill', d => d.selected ? 'yellow':'red')
-      .attr('stroke', d => d.selected ? 'yellow':'red')
+      .attr('fill', d => (d.selected ? 'yellow' : 'red'))
+      .attr('stroke', d => (d.selected ? 'yellow' : 'red'))
       .attr('r', d => r(d[field]))
       .on('click', d => dispatch.call('toggleCircle', this, d));
 
@@ -50,7 +50,7 @@ export default function BubbleChart() {
     dispatch = _;
 
     return me;
-  }
+  };
 
   return me;
 }
