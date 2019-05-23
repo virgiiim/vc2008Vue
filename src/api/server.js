@@ -34,7 +34,7 @@ api.use(cors());
  *
  */
 api.get('/users', (req, res) => {
-  db.all('SELECT f, sum(duration) durations, count(*) num_calls, count(distinct t) num_contacts FROM callrecords group by 1 order by 2 desc', (err, rows) => {
+  db.all('SELECT f, sum(duration) duration, count(*) num_call, count(distinct t) num_contacts FROM callrecords group by 1 order by 2 desc', (err, rows) => {
     res.json(rows);
   });
 });

@@ -51,23 +51,15 @@ export default {
             .call(bc);
         });
 
-        d3.select(this.$refs.persons)
-          .datum(this.users())
-          .call(bc);
+        d3.json('http://localhost:3000/users')
+          .then((users) => {
+            d3.select(this.$refs.persons)
+              .datum(users)
+              .call(bc);
+          });
       }));
   },
   methods: {
-    users() {
-      return d3.nest()
-        .key(d => +d.f)
-        .rollup(lv => ({
-          duration: d3.sum(lv, r => r.duration),
-          num_call: lv.length,
-          num_contacts: d3.set(lv, r => r.t).size(),
-        }))
-        .entries(this.calls)
-        .map(d => ({ f: +d.key, ...d.value }));
-    },
   },
 };
 </script>
