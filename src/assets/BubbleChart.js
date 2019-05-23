@@ -1,13 +1,15 @@
 const d3 = require('d3');
 
 export default function BubbleChart() {
-  const field = 'num_call';
+  const field = 'num_contacts';
   const r = d3.scaleSqrt()
     .domain([0, 1000])
     .range([0, 10]);
 
   const width = 500;
   const height = 500;
+
+  let dispatch = d3.dispatch();
 
   const simulation = d3.forceSimulation()
     .force('charge', d3.forceManyBody().strength(-1))
@@ -17,11 +19,8 @@ export default function BubbleChart() {
     .force('collide', d3.forceCollide().radius(d => r(d[field]) + 0.5).iterations(5));
 
   function me(selection) {
-    console.log(selection);
-
-
     r.domain([0, d3.max(selection.datum(), d => d[field])]);
-    simulation.nodes(selection.datum().sort((a,b) => b[field] - a[field]))
+    simulation.nodes(selection.datum().sort((a, b) => b[field] - a[field]))
       .force('collide', d3.forceCollide().radius(d => r(d[field]) + 0.5).iterations(5));
 
     const gCircle = selection.selectAll('g.circle')
@@ -31,11 +30,14 @@ export default function BubbleChart() {
       .attr('class', 'circle');
 
     gCircle.append('circle')
-      .attr('fill', 'red')
       .attr('fill-opacity', 0.4)
-      .attr('stroke', 'red')
-      .attr('stroke-width', 1)
-      .attr('r', d => r(d[field]));
+      .attr('stroke-width', 1);
+
+    selection.selectAll('g.circle circle')
+      .attr('fill', d => d.selected ? 'yellow':'red')
+      .attr('stroke', d => d.selected ? 'yellow':'red')
+      .attr('r', d => r(d[field]))
+      .on('click', d => dispatch.call('toggleCircle', this, d));
 
     simulation.on('tick', () => {
       gCircle
@@ -43,6 +45,12 @@ export default function BubbleChart() {
     });
   }
 
+  me.dispatch = function (_) {
+    if (!arguments.length) return dispatch;
+    dispatch = _;
+
+    return me;
+  }
 
   return me;
 }

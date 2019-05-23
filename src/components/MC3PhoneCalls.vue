@@ -14,11 +14,13 @@
 </template>
 
 <script>
-import BubbleChart from '@/assets/BubbleChart.js';
+import BubbleChart from '@/assets/BubbleChart';
 
 const d3 = require('d3');
 
-const bc = BubbleChart();
+const dispatch = d3.dispatch('toggleCircle');
+const bc = BubbleChart()
+  .dispatch(dispatch);
 
 export default {
   name: 'MC3PhoneCalls',
@@ -38,8 +40,16 @@ export default {
           dt: tp(r.Datetime),
           duration: +r['Duration(seconds)'],
           cid: +r['Cell Tower'],
+          selected: false,
         }));
-        // console.log(this.users());
+
+        // registering for custom event
+        dispatch.on('toggleCircle', (c) => {
+          c.selected = !c.selected;
+          console.log(c);
+          d3.select(this.$refs.persons)
+            .call(bc);
+        });
 
         d3.select(this.$refs.persons)
           .datum(this.users())
@@ -50,7 +60,11 @@ export default {
     users() {
       return d3.nest()
         .key(d => +d.f)
-        .rollup(lv => ({ duration: d3.sum(lv, r => r.duration), num_call: lv.length }))
+        .rollup(lv => ({
+          duration: d3.sum(lv, r => r.duration),
+          num_call: lv.length,
+          num_contacts: d3.set(lv, r => r.t).size(),
+        }))
         .entries(this.calls)
         .map(d => ({ f: +d.key, ...d.value }));
     },
