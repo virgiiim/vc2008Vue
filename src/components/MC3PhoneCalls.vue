@@ -9,6 +9,15 @@
           <g class="persons" ref="persons"></g>
         </svg>
       </b-col>
+      <b-col cols="4">
+        <b-list-group>
+          <b-list-group-item v-for="ua in userActivities"
+                             :key="`${ua.t}${ua.ts}`"
+                             class="d-flex justify-content-between align-items-center">
+            {{ua.t}} @({{ua.ts}})
+          </b-list-group-item>
+        </b-list-group>
+      </b-col>
     </b-row>
   </b-container>
 </template>
@@ -29,6 +38,7 @@ export default {
   data() {
     return {
       calls: [],
+      userActivities: [],
     };
   },
   mounted() {
@@ -58,7 +68,10 @@ export default {
             d3.json(`${API_HOST}/user/${id}`)
               .then((user) => {
                 console.log(user);
+                this.userActivities = user;
               });
+          } else {
+            this.userActivities = [];
           }
         });
 
