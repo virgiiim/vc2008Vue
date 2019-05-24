@@ -14,7 +14,10 @@
           <b-list-group-item v-for="ua in userActivities"
                              :key="`${ua.t}${ua.ts}`"
                              class="d-flex justify-content-between align-items-center">
-            {{ua.t}} @({{ua.ts}})
+            <b-link @click="toggleCircle(ua)">
+              {{ua.t}} @({{ua.ts}})
+            </b-link>
+
           </b-list-group-item>
         </b-list-group>
       </b-col>
@@ -38,6 +41,7 @@ export default {
   data() {
     return {
       calls: [],
+      users: [],
       userActivities: [],
     };
   },
@@ -57,11 +61,12 @@ export default {
 
         // registering for custom event
         dispatch.on('toggleCircle', (c) => {
+          if (!c.selected) {
+            this.users.forEach(u => u.selected = false);
+          }
+
           c.selected = !c.selected;
           console.log(c);
-
-          d3.select(this.$refs.persons)
-            .call(bc);
 
           const id = c.f;
           if (c.selected) {
@@ -73,17 +78,28 @@ export default {
           } else {
             this.userActivities = [];
           }
+
+          d3.select(this.$refs.persons)
+            .datum(this.users)
+            .call(bc);
         });
 
         d3.json(`${API_HOST}/users`)
           .then((users) => {
+            this.users = users;
             d3.select(this.$refs.persons)
-              .datum(users)
+              .datum(this.users)
               .call(bc);
           });
       }));
   },
   methods: {
+    toggleCircle(ua) {
+      const candidates = this.users
+        .filter(u => u.f === ua.t);
+
+      dispatch.call('toggleCircle', this, candidates.pop());
+    },
   },
 };
 </script>
