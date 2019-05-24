@@ -77,7 +77,7 @@ api.get('/users', (req, res) => {
  */
 api.get('/user/:id', (req, res) => {
   const { id } = req.params;
-  db.all(`SELECT * FROM callrecords where f=${id}`, (err, rows) => {
+  db.all(`SELECT * FROM callrecords where f=${id} order by ts`, (err, rows) => {
     res.json(rows);
   });
 });

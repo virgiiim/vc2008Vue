@@ -18,6 +18,8 @@ import BubbleChart from '@/assets/BubbleChart';
 
 const d3 = require('d3');
 
+const API_HOST = 'http://localhost:3000';
+
 const dispatch = d3.dispatch('toggleCircle');
 const bc = BubbleChart()
   .dispatch(dispatch);
@@ -47,11 +49,20 @@ export default {
         dispatch.on('toggleCircle', (c) => {
           c.selected = !c.selected;
           console.log(c);
+
           d3.select(this.$refs.persons)
             .call(bc);
+
+          const id = c.f;
+          if (c.selected) {
+            d3.json(`${API_HOST}/user/${id}`)
+              .then((user) => {
+                console.log(user);
+              });
+          }
         });
 
-        d3.json('http://localhost:3000/users')
+        d3.json(`${API_HOST}/users`)
           .then((users) => {
             d3.select(this.$refs.persons)
               .datum(users)
